@@ -67,14 +67,14 @@ const upsertUserInfo = (user, doneCallback) => {
     })
 }
 //   User.findOne({providerId : user.providerId}).then((currentUser)=>{
-//     if(!currentUser){//if user is not exist create new user        
+//     if(!currentUser){//if user is not exist create new user
 //       new User(user).save().then((newUser) =>{
 //           console.log('User has been created ' , newUser);
-//           doneCallback(null,newUser);  
+//           doneCallback(null,newUser);
 //       }) ;
 //     }else{
 //         console.log('User already exists in datbase' , currentUser);
-//         doneCallback(null,currentUser);  
+//         doneCallback(null,currentUser);
 //     }
 //   });
 passport.use(
@@ -122,7 +122,7 @@ passport.use(
     //   provider:'KAKAO',
     //   providerId: profile.id,
     //   profileImage: profile._json.properties.profile_image
-    // },done);   
+    // },done);
     })
 )
 
@@ -135,7 +135,7 @@ passport.use(
     //   provider:'FACEBOOK',
     //   providerId: profile.id,
     //   profileImage: profile._json.picture.data.url,
-    // },done);  
+    // },done);
     })
 )
 module.exports = null

@@ -143,12 +143,12 @@ module.exports = {
       var keyword = req.query.keyword
       var offset = req.query.offset ? 1 : parseInt(req.query.offset)
       console.log(keyword)
-      keyword = encodeURI(keyword) //       
+      keyword = encodeURI(keyword) //
       var apiUrl = `https://itunes.apple.com/search?term=${keyword}&country=JP&entity=song&lang=ja_jp&limit=${offset}`
       var reqeustOptions = {
         url: apiUrl
       }
-      // console.log(reqeustOptions)      
+      // console.log(reqeustOptions)
       var result = await requestGet(reqeustOptions)
       var JSONBody = JSON.parse(result.body)
       res.send(JSONBody)

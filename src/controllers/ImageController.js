@@ -16,13 +16,13 @@ async function requestGet (options) {
 module.exports = {
   async search (req, res) {
     try {
-      var search = encodeURI(req.query.keyword) //       
+      var search = encodeURI(req.query.keyword) //
       var apiUrl = `https://openapi.naver.com/v1/search/image.json?query=${search}&display=100`
       var reqeustOptions = {
         url: apiUrl,
         headers: {'X-Naver-Client-Id': clientId, 'X-Naver-Client-Secret': clientSecret}
       }
-      // console.log(reqeustOptions)      
+      // console.log(reqeustOptions)
       var result = await requestGet(reqeustOptions)
       var JSONBody = JSON.parse(result.body)
       res.send(JSONBody)
