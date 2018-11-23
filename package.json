@@ -1,0 +1,51 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/app.js --exec  \"npm run lint:fix && node\"",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js  --fix",
+    "seed": "node seed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.3",
+    "fs": "0.0.1-security",
+    "joi": "^14.1.0",
+    "jsonwebtoken": "^8.0.0",
+    "kuroshiro": "^1.1.1",
+    "kuroshiro-analyzer-kuromoji": "^1.1.0",
+    "kuroshiro-analyzer-yahoo-webapi": "^1.1.0",
+    "morgan": "^1.9.1",
+    "mysql2": "^1.6.1",
+    "nodemon": "^1.18.4",
+    "papago": "^1.1.1",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth20": "^1.0.0",
+    "passport-jwt": "^4.0.0",
+    "passport-kakao": "0.0.5",
+    "passport-naver": "^1.0.6",
+    "request-ip": "^2.1.1",
+    "rss-parser": "^3.5.4",
+    "sequelize": "^4.38.0",
+    "twitter": "^1.7.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.6.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}
