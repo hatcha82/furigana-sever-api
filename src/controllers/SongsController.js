@@ -170,6 +170,7 @@ module.exports = {
         naverBlogRefNoList.push(naverBlogRefNo)
       }
     })
+    console.log(naverBlogRefNoList)
     try {
       const Op = sequelize.Op
       const songs = await Song.findAll({
