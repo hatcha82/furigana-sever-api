@@ -50,8 +50,6 @@ module.exports = {
         }
       })
 
-      console.log(naverBlogRefNoList)
-
       const Op = sequelize.Op
       const songs = await Song.findAll({
         attributes: {exclude: ['lyrics', 'lyricsKor', 'tab']},
