@@ -33,7 +33,7 @@ module.exports = {
       const offset = parseInt(req.query.offset)
       const limit = parseInt(req.query.limit || 30)
       var count = 0
-
+      const Op = sequelize.Op
       var queryOption = {
         limit: limit,
         offset: offset
@@ -48,6 +48,11 @@ module.exports = {
             }
           }))
         }
+
+        // if (req.query.songid) {
+        //   queryOption.where['id'] = {[Op.eq]: req.query.songid}
+        // }
+
         queryOption.attributes = [[Song.sequelize.fn('COUNT', Song.sequelize.col('id')), 'count']]
         count = await Song.findOne(queryOption)
 
@@ -55,17 +60,22 @@ module.exports = {
         queryOption.order = [['rank', 'ASC']]
         songs = await Song.findAll(queryOption)
       } else {
+        if (req.query.songid) {
+          queryOption.where = {
+            id: {[Op.gt]: parseInt(req.query.songid)}
+          }
+        }
         queryOption.attributes = [[Song.sequelize.fn('COUNT', Song.sequelize.col('id')), 'count']]
         count = await Song.findOne(queryOption)
 
         queryOption.attributes = {exclude: ['lyrics', 'tab', 'lyricsKor']}
-        queryOption.order = [['rank', 'ASC']]
+        // queryOption.order = [['rank', 'ASC']]
         songs = await Song.findAll(queryOption)
       }
       res.send({data: songs, count: count})
     } catch (err) {
       res.status(500).send({
-        error: err
+        error: err.toString()
       })
     }
   },

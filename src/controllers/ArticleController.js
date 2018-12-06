@@ -1,4 +1,4 @@
-const {Article} = require('../models')
+const {Article, sequelize} = require('../models')
 // import YahooWebAnalyzer from "kuroshiro-analyzer-yahoo-webapi";
 const Kuroshiro = require('kuroshiro')
 const KuromojiAnalyzer = require('kuroshiro-analyzer-kuromoji')
@@ -15,34 +15,40 @@ module.exports = {
       const limit = parseInt(req.query.limit || 50)
       const search = req.query.search
       const offset = parseInt(req.query.offset)
+      var count = 0
+      const Op = sequelize.Op
+      var queryOption = {
+        limit: limit,
+        offset: offset
+      }
       if (search) {
-        articles = await Article.findAll({
-          attributes: {exclude: ['article', 'furigana', 'translateText']},
-          where: {
-            $or: [
-              'title', 'type', 'article'
-            ].map(key => ({
-              [key]: {
-                $like: `%${search}%`
-              }
-            }))
-          },
-          order: [
-            ['newsPublishedDate', 'DESC']
-          ]
-        })
+        queryOption.where = {
+          $or: [
+            'title', 'type', 'article'
+          ].map(key => ({
+            [key]: {
+              $like: `%${search}%`
+            }
+          }))
+        }
+
+        queryOption.attributes = [[Article.sequelize.fn('COUNT', Article.sequelize.col('id')), 'count']]
+
+        count = await articles.findOne(queryOption)
+        queryOption.attributes = {exclude: ['article', 'furigana', 'translateText']}
+        queryOption.order = [['newsPublishedDate', 'DESC']]
+        articles = await Article.findAll(queryOption)
       } else {
-        var count = await Article.findOne({
-          attributes: [[Article.sequelize.fn('COUNT', Article.sequelize.col('id')), 'count']]
-        })
-        articles = await Article.findAll({
-          attributes: {exclude: ['article', 'furigana', 'translateText']},
-          order: [
-            ['newsPublishedDate', 'DESC']
-          ],
-          limit: limit,
-          offset: offset
-        })
+        if (req.query.newsPublishedDate) {
+          queryOption.where = {
+            newsPublishedDate: {[Op.lt]: req.query.newsPublishedDate}
+          }
+        }
+        queryOption.attributes = [[Article.sequelize.fn('COUNT', Article.sequelize.col('id')), 'count']]
+        count = await Article.findOne(queryOption)
+        queryOption.attributes = {exclude: ['article', 'furigana', 'translateText']}
+        queryOption.order = [['newsPublishedDate', 'DESC']]
+        articles = await Article.findAll(queryOption)
       }
       res.send({data: articles, count: count})
     } catch (err) {
