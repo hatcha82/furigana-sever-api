@@ -33,7 +33,6 @@ module.exports = {
         }
 
         queryOption.attributes = [[Article.sequelize.fn('COUNT', Article.sequelize.col('id')), 'count']]
-
         count = await articles.findOne(queryOption)
         queryOption.attributes = {exclude: ['article', 'furigana', 'translateText']}
         queryOption.order = [['newsPublishedDate', 'DESC']]
