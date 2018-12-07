@@ -12,6 +12,7 @@ module.exports = {
   async index (req, res) {
     try {
       let articles = null
+      console.log(req.query)
       const limit = parseInt(req.query.limit || 50)
       const search = req.query.search
       const offset = parseInt(req.query.offset)
@@ -24,16 +25,15 @@ module.exports = {
       if (search) {
         queryOption.where = {
           $or: [
-            'title', 'type', 'article'
+            'title', 'titleTranslate'
           ].map(key => ({
             [key]: {
               $like: `%${search}%`
             }
           }))
         }
-
         queryOption.attributes = [[Article.sequelize.fn('COUNT', Article.sequelize.col('id')), 'count']]
-        count = await articles.findOne(queryOption)
+        count = await Article.findOne(queryOption)
         queryOption.attributes = {exclude: ['article', 'furigana', 'translateText']}
         queryOption.order = [['newsPublishedDate', 'DESC']]
         articles = await Article.findAll(queryOption)
@@ -51,6 +51,7 @@ module.exports = {
       }
       res.send({data: articles, count: count})
     } catch (err) {
+      console.log(err)
       res.status(500).send({
         error: 'an error has occured trying to fetch the articles'
       })
