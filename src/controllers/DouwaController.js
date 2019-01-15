@@ -34,7 +34,7 @@ module.exports = {
         }
         queryOption.attributes = [[Douwa.sequelize.fn('COUNT', Douwa.sequelize.col('id')), 'count']]
         count = await Douwa.findOne(queryOption)
-        queryOption.attributes = ['id', 'title', 'titleFurigana', 'ImageUrl', 'articleType', [sequelize.fn('LEFT', sequelize.col('articelOnlyText'), 100), 'articelOnlyText']]
+        queryOption.attributes = ['id', 'title', 'titleFurigana', 'ImageUrl', 'articleType', 'episod', [sequelize.fn('LEFT', sequelize.col('articelOnlyText'), 100), 'articelOnlyText']]
 
         // {exclude: ['article', 'furigana', 'articleOnlyText', 'translateText']}
 
@@ -48,7 +48,7 @@ module.exports = {
         }
         queryOption.attributes = [[Douwa.sequelize.fn('COUNT', Douwa.sequelize.col('id')), 'count']]
         count = await Douwa.findOne(queryOption)
-        queryOption.attributes = ['id', 'title', 'titleFurigana', 'ImageUrl', 'articleType', [sequelize.fn('LEFT', sequelize.col('articelOnlyText'), 100), 'articelOnlyText']]
+        queryOption.attributes = ['id', 'title', 'titleFurigana', 'ImageUrl', 'articleType', 'episod', [sequelize.fn('LEFT', sequelize.col('articelOnlyText'), 100), 'articelOnlyText']]
         queryOption.order = [['updatedAt', 'DESC']]
         douwas = await Douwa.findAll(queryOption)
       }
