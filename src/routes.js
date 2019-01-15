@@ -4,6 +4,7 @@ const {
   ImageController,
   VisitorContoller,
   ArticleController,
+  DouwaController,
   SongsController,
   TwitterController,
   KanjisController,
@@ -64,6 +65,20 @@ module.exports = (app) => {
   app.delete('/article/:articleId',
     isAuthenticated,
     ArticleController.remove)
+
+  app.get('/douwas',
+    DouwaController.index)
+  app.get('/douwas/recentNews',
+    DouwaController.recentNews)
+  app.get('/douwa/:douwaId',
+    DouwaController.show)
+  app.put('/douwa/:douwaId',
+    DouwaController.put)
+  app.post('/douwa',
+    DouwaController.post)
+  app.delete('/douwa/:douwaId',
+    isAuthenticated,
+    DouwaController.remove)
 
   app.get('/twitters/userTimeLine', TwitterController.userTimeLine)
   app.get('/twitters/homeTimeline', TwitterController.homeTimeline)
