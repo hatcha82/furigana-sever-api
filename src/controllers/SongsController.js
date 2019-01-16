@@ -55,8 +55,15 @@ module.exports = {
 
         queryOption.attributes = [[Song.sequelize.fn('COUNT', Song.sequelize.col('id')), 'count']]
         count = await Song.findOne(queryOption)
+        queryOption.attributes = [
+          'id',
+          'title',
+          'artist',
+          'album',
+          'albumImageUrl',
+          [sequelize.fn('LEFT', sequelize.col('lyrics'), 100), 'lyrics'],
+          [sequelize.fn('LEFT', sequelize.col('lyricsKor'), 100), 'lyricsKor']]
 
-        queryOption.attributes = {exclude: ['lyrics', 'tab', 'lyricsKor']}
         queryOption.order = [['rank', 'ASC']]
         songs = await Song.findAll(queryOption)
       } else {
@@ -68,7 +75,14 @@ module.exports = {
         queryOption.attributes = [[Song.sequelize.fn('COUNT', Song.sequelize.col('id')), 'count']]
         count = await Song.findOne(queryOption)
 
-        queryOption.attributes = {exclude: ['lyrics', 'tab', 'lyricsKor']}
+        queryOption.attributes = [
+          'id',
+          'title',
+          'artist',
+          'album',
+          'albumImageUrl',
+          [sequelize.fn('LEFT', sequelize.col('lyrics'), 100), 'lyrics'],
+          [sequelize.fn('LEFT', sequelize.col('lyricsKor'), 100), 'lyricsKor']]
         // queryOption.order = [['rank', 'ASC']]
         songs = await Song.findAll(queryOption)
       }
@@ -183,7 +197,14 @@ module.exports = {
     try {
       const Op = sequelize.Op
       const songs = await Song.findAll({
-        attributes: {exclude: ['lyrics', 'lyricsKor', 'tab']},
+        attributes: [
+          'id',
+          'title',
+          'artist',
+          'album',
+          'albumImageUrl',
+          [sequelize.fn('LEFT', sequelize.col('lyrics'), 100), 'lyrics'],
+          [sequelize.fn('LEFT', sequelize.col('lyricsKor'), 100), 'lyricsKor']],
         where: {
           naverBlogRefNo: {
             [Op.in]: naverBlogRefNoList
@@ -206,7 +227,14 @@ module.exports = {
       const artist = req.query.artist
       const Op = sequelize.Op
       const songs = await Song.findAll({
-        attributes: {exclude: ['lyrics', 'lyricsKor', 'tab']},
+        attributes: [
+          'id',
+          'title',
+          'artist',
+          'album',
+          'albumImageUrl',
+          [sequelize.fn('LEFT', sequelize.col('lyrics'), 100), 'lyrics'],
+          [sequelize.fn('LEFT', sequelize.col('lyricsKor'), 100), 'lyricsKor']],
         where: {
           artist: artist,
           albumImageUrl: {

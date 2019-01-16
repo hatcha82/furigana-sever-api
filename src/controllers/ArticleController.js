@@ -34,7 +34,18 @@ module.exports = {
         }
         queryOption.attributes = [[Article.sequelize.fn('COUNT', Article.sequelize.col('id')), 'count']]
         count = await Article.findOne(queryOption)
-        queryOption.attributes = {exclude: ['article', 'furigana', 'translateText']}
+        // queryOption.attributes = {exclude: ['article', 'furigana', 'translateText']}
+        queryOption.attributes = [
+          'id',
+          'title',
+          'titleFurigana',
+          'titleTranslate',
+          'newsImageUrl',
+          'newsPubllisherImageUrl',
+          'newsPublishedDate',
+          [sequelize.fn('LEFT', sequelize.col('article'), 100), 'article'],
+          [sequelize.fn('LEFT', sequelize.col('translateText'), 100), 'translateText']]
+
         queryOption.order = [['newsPublishedDate', 'DESC']]
         articles = await Article.findAll(queryOption)
       } else {
@@ -45,7 +56,16 @@ module.exports = {
         }
         queryOption.attributes = [[Article.sequelize.fn('COUNT', Article.sequelize.col('id')), 'count']]
         count = await Article.findOne(queryOption)
-        queryOption.attributes = {exclude: ['article', 'furigana', 'translateText']}
+        queryOption.attributes = [
+          'id',
+          'title',
+          'titleFurigana',
+          'titleTranslate',
+          'newsImageUrl',
+          'newsPubllisherImageUrl',
+          'newsPublishedDate',
+          [sequelize.fn('LEFT', sequelize.col('article'), 100), 'article'],
+          [sequelize.fn('LEFT', sequelize.col('translateText'), 100), 'translateText']]
         queryOption.order = [['newsPublishedDate', 'DESC']]
         articles = await Article.findAll(queryOption)
       }
@@ -60,9 +80,19 @@ module.exports = {
   async recentNews (req, res) {
     const limit = parseInt(req.query.limit || 4)
     const offset = parseInt(req.query.offset || 0)
+
     try {
       const articles = await Article.findAll({
-        attributes: {exclude: ['article', 'furigana', 'translateText']},
+        attributes: [
+          'id',
+          'title',
+          'titleFurigana',
+          'titleTranslate',
+          'newsImageUrl',
+          'newsPubllisherImageUrl',
+          'newsPublishedDate',
+          [sequelize.fn('LEFT', sequelize.col('article'), 100), 'article'],
+          [sequelize.fn('LEFT', sequelize.col('translateText'), 100), 'translateText']],
         order: [
           ['newsPublishedDate', 'DESC']
         ],
