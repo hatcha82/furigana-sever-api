@@ -10,6 +10,7 @@ const KuromojiAnalyzer = require('kuroshiro-analyzer-kuromoji')
 // })
 const kuroshiro = new Kuroshiro()
 kuroshiro.init(new KuromojiAnalyzer())
+const Op = sequelize.Op
 module.exports = {
   async index (req, res) {
     try {
@@ -24,13 +25,28 @@ module.exports = {
     }
   },
   async recentNews (req, res) {
+    const attributes = [
+      'id',
+      'title',
+      'titleFurigana',
+      'titleTranslate',
+      'newsImageUrl',
+      'newsPubllisherImageUrl',
+      'newsPublishedDate',
+      [sequelize.fn('LEFT', sequelize.col('article'), 100), 'article'],
+      [sequelize.fn('LEFT', sequelize.col('translateText'), 100), 'translateText']]
+
     try {
       const articles = await Article.findAll({
-        attributes: {exclude: ['article', 'furigana', 'translateText']},
+        attributes: attributes,
+        where: {
+          titleTranslate: {[Op.ne]: null}
+
+        },
         order: [
           ['newsPublishedDate', 'DESC']
         ],
-        limit: 12
+        limit: 6
       })
       return articles
     } catch (err) {
@@ -51,8 +67,19 @@ module.exports = {
       })
 
       const Op = sequelize.Op
+
+      const attributes = [
+        'id',
+        'title',
+        'artist',
+        'album',
+        'albumImageUrl',
+        [sequelize.fn('LEFT', sequelize.col('lyrics'), 100), 'lyrics'],
+        [sequelize.fn('LEFT', sequelize.col('lyricsKor'), 100), 'lyricsKor']
+      ]
+
       const songs = await Song.findAll({
-        attributes: {exclude: ['lyrics', 'lyricsKor', 'tab']},
+        attributes: attributes,
         where: {
           naverBlogRefNo: {
             [Op.in]: naverBlogRefNoList
@@ -61,7 +88,7 @@ module.exports = {
         order: [
           [sequelize.random()]
         ],
-        limit: 12
+        limit: 6
       })
       return songs
     } catch (err) {

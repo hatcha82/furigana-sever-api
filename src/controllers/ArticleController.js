@@ -109,7 +109,6 @@ module.exports = {
   async show (req, res) {
     try {
       const article = await Article.findById(req.params.articleId)
-      console.log(article)
       res.send(article)
     } catch (err) {
       res.status(500).send({
@@ -145,8 +144,6 @@ module.exports = {
   async remove (req, res) {
     try {
       const articleId = req.params.articleId
-      console.log('param:')
-      console.log(req.params)
       const article = await Article.findOne({
         where: {
           id: articleId
